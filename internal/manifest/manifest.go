@@ -38,12 +38,12 @@ func (m *Manifest) Resolve(version, goos, arch string) (*PlatformBuild, error) {
 	case "darwin":
 		builds = ver.Darwin
 	default:
-		return nil, fmt.Errorf("unsupported OS: %s", os)
+		return nil, fmt.Errorf("unsupported OS: %s", goos)
 	}
 
 	build, ok := builds[arch]
 	if !ok {
-		return nil, fmt.Errorf("no build for %s/%s", os, arch)
+		return nil, fmt.Errorf("no build for %s/%s", goos, arch)
 	}
 
 	return &build, nil
