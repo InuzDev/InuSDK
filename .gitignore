@@ -1,0 +1,26 @@
+# Build output
+bin/
+dist/
+*.exe
+*.out
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Viper config (local)
+config.yaml
+config.local.yaml
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Go
+vendor/
