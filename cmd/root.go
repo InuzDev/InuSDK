@@ -4,6 +4,8 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"InuSDK/internal/setup"
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -20,13 +22,21 @@ var rootCmd = &cobra.Command{
 
 	Made for developers by a developer, this CLI provides the comfort of simplicity but also
 	the freedom to configure your SDKs as you like. Providing full detail of each installation.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		// Skip setup check for reset itself
+		if cmd.Name() == "reset" {
+			return
+		}
+
+		if setup.IsFirstRun() {
+			if err := setup.Run(false); err != nil {
+				fmt.Fprintf(os.Stderr, "Setup failed: %s\n", err)
+				os.Exit(1)
+			}
+		}
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
