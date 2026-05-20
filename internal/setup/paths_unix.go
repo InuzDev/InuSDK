@@ -9,6 +9,40 @@ import (
 	"strings"
 )
 
+func removeFromPath(oldBaseDir string) error {
+	shellConfig := resolveShellConfig()
+	if shellConfig == "" {
+		return nil
+	}
+
+	content, err := os.ReadFile(shellConfig)
+
+	if err != nil {
+		return err
+	}
+
+	oldShims := filepath.Join(oldBaseDir, "shims")
+
+	lines := strings.Split(string(content), "\n")
+	filtered := []string{}
+	skip := false
+
+	for _, line := range lines {
+		if line == "# InuSDK" {
+			skip = true
+		}
+		if skip && strings.Contains(line, oldShims) {
+			skip = false
+			continue
+		}
+		if !skip {
+			filtered = append(filtered, line)
+		}
+	}
+
+	return os.WriteFile(shellConfig, []byte(strings.Join(filtered, "\n")), 0644)
+}
+
 func resolveDocumentsDir(home string) string {
 	return filepath.Join(home, "Documents")
 }

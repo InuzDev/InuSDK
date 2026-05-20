@@ -21,7 +21,46 @@ func Run(isReset bool) error {
 	if isReset {
 		fmt.Println("Warning: This will reset all InuSDK configuraiton")
 		fmt.Println("Installed SDKs will not be deleted, only the configuration will be resetted to default")
-		fmt.Print("Continue? [y/N]")
+		fmt.Print("Continue? [y/N] ")
+
+		oldBaseDir := viper.GetString("base_dir")
+
+		if oldBaseDir != "" {
+			fmt.Printf("Current base directory: %s\n\n", oldBaseDir)
+			fmt.Println("Want to keep the files [1] or delete them [2]? Recommended [2] for clean state")
+			fmt.Println("(Default 1): ")
+
+			reader := bufio.NewReader(os.Stdin)
+			sdkChoice, _ := reader.ReadString('\n')
+			sdkChoice = strings.TrimSpace(sdkChoice)
+
+			if sdkChoice == "2" {
+				fmt.Printf("\n Deleting %s...", oldBaseDir)
+
+				if err := os.RemoveAll(oldBaseDir); err != nil {
+					return fmt.Errorf("Could not delete old base directory: %s", err)
+				}
+
+				fmt.Println("Old directory removed")
+			} else {
+				fmt.Printf("Keeping existing SDKs at %s\n", oldBaseDir)
+			}
+
+			if err := removeFromPath(oldBaseDir); err != nil {
+				fmt.Printf("Could not remove old PATH entry: %s\n", err)
+			}
+		}
+
+		fmt.Print("Proceed with reset? [y/N]")
+
+		reader := bufio.NewReader(os.Stdin)
+		answer, _ := reader.ReadString('\n')
+		answer = strings.TrimSpace(strings.ToLower(answer))
+
+		if answer != "y" {
+			fmt.Println("Reset cancelled")
+			return nil
+		}
 	}
 
 	reader := bufio.NewReader(os.Stdin)
