@@ -12,8 +12,9 @@ import (
 // uninstallCmd represents the uninstall command
 var uninstallCmd = &cobra.Command{
 	Use:   "uninstall",
-	Short: "Uninstall InuSDK",
-	Long:  `Delete ONLY the SDK manager, any SDK installed via this way wont be affected, yet they are at your own management.`,
+	Short: "Uninstall A SDK",
+	Long: `Remove an existing Software Development Kit, you can specify the version [--sdkversion <version>] or remove them all [--all]
+			  If there any SDK in use, need to use [--all --force]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("uninstall called")
 	},
