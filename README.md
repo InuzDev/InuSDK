@@ -12,4 +12,4 @@ Right now, most of the commands are under development.
 
 ### Powershell/Windows terminal
 
-to install in Windows, run the powershell script `install.ps1`, as mentioned in [Shell/Bash](#Shell/Bash), run `inusdk`
+to install in Windows, run the powershell script `install.ps1`, as mentioned in [Shell/Bash](K#shellbash), run `inusdk`
