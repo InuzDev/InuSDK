@@ -14,13 +14,16 @@ $arch = if ([System.Environment]::Is64BitOperatingsystem)
 } else
 { "386"
 }
+Write-Host "Detected: Windows/$arch"
 
 # Fetch the latest release from the repository release page
 Write-Host "Fetching latest release"
 $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases/latest"
 $version = $release.tag_name
 
-$asset = $release.assets | Where-Object { $_.name -like "*windows*$arch" }
+$asset = $release.assets | Where-Object {
+   $_.name -like "*windows*$arch*.zip" -and $_.name -notlike "*checksums*"
+}
 
 # If there wasn't any available version for the user's machine.
 if (-not $asset)
