@@ -222,6 +222,13 @@ func writeConfig(BaseDir, home string) error {
 
 	viper.SetConfigFile(filepath.Join(configDir, "config.yaml"))
 
+	viper.Set("buckets", []map[string]string{
+		{
+			"name": "main",
+			"url:": "https://raw.githubusercontent.com/InuzDev/inusdk-bucket/master/manifests/java.json",
+		},
+	})
+
 	return viper.WriteConfig()
 }
 
