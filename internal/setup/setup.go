@@ -56,7 +56,7 @@ func Run(isReset bool) error {
 				fmt.Printf("Keeping existing SDKs at %s\n", oldBaseDir)
 			}
 
-			if err := removeFromPath(oldBaseDir); err != nil {
+			if err := RemoveFromPath(oldBaseDir); err != nil {
 				fmt.Printf("Could not remove old PATH entry: %s\n", err)
 			}
 		}
